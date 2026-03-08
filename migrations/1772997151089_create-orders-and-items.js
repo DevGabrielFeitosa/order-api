@@ -13,7 +13,7 @@ exports.up = (pgm) => {
       type: 'timestamp',
       notNull: true
     }
-  }, ifNotExists=true);
+  }, { ifNotExists: true });
 
   pgm.createTable('items', {
     id: 'id',
@@ -35,7 +35,7 @@ exports.up = (pgm) => {
       type: 'numeric',
       notNull: true
     }
-  }, ifNotExists=true);
+  }, { ifNotExists: true });
 
 };
 

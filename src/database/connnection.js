@@ -5,7 +5,8 @@ const pool = new Pool({
     user: "postgres",
     password: "postgres",
     database: "ordersdb",
-    port: 5433
+    port: 5433,
+    timezone: 'UTC'
 })
 
 module.exports = pool

@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const SECRET = "mysecret";
 
+// Faz o login e retorna o token.
 exports.login = async (req, res) => {
 
     const { username, password } = req.body;

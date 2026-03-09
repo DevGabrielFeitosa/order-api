@@ -1,5 +1,6 @@
 const pool = require("../database/connnection")
 
+// Salva o pedido e os itens no banco.
 exports.saveOrder = async (order) => {
 
     const client = await pool.connect()
@@ -45,11 +46,13 @@ exports.saveOrder = async (order) => {
 
 }
 
+// Busca um pedido pelo identificador.
 exports.findOrderById = async (orderId) => {
     const result = await pool.query('SELECT * FROM orders WHERE "orderId" = $1', [orderId]);
     return result.rows[0];
 };
 
+// Busca um pedido com a lista de itens.
 exports.findOrderWithItems = async (orderId) => {
 
     const orderResult = await pool.query(
@@ -72,6 +75,7 @@ exports.findOrderWithItems = async (orderId) => {
     };
 };
 
+// Lista os pedidos por data de criação.
 exports.findAllOrders = async () => {
 
     const result = await pool.query(`SELECT * FROM orders ORDER BY "creationDate" DESC`)
@@ -79,6 +83,7 @@ exports.findAllOrders = async () => {
     return result.rows
 }
 
+// Remove um pedido e seus itens.
 exports.deleteOrder = async (orderId) => {
 
     const client = await pool.connect()
@@ -113,6 +118,7 @@ exports.deleteOrder = async (orderId) => {
     }
 }
 
+// Atualiza o pedido e grava os itens novamente.
 exports.updateOrder = async (order) => {
 
     const client = await pool.connect();

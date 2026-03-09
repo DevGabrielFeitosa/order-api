@@ -1,5 +1,6 @@
 const HttpError = require("../errors/HttpError");const orderRepository = require("../repositories/orderRepository");
 
+// Valida os dados recebidos do pedido.
 function validatePayload(payload) {
     const errors = [];
 
@@ -55,6 +56,7 @@ function validatePayload(payload) {
     }
 }
 
+// Converte o payload da API para o formato do pedido.
 function mapRequestToOrder(payload) {
     return {
         orderId: payload.numeroPedido,
@@ -68,6 +70,7 @@ function mapRequestToOrder(payload) {
     };
 }
 
+// Valida e cria um novo pedido.
 exports.createOrder = async (payload) => {
     validatePayload(payload);
 
@@ -80,6 +83,7 @@ exports.createOrder = async (payload) => {
     return await orderRepository.saveOrder(order);
 };
 
+// Busca um pedido com seus itens.
 exports.getOrderById = async (orderId) => {
 
     const order = await orderRepository.findOrderWithItems(orderId);
@@ -91,6 +95,7 @@ exports.getOrderById = async (orderId) => {
     return order;
 };
 
+// Retorna todos os pedidos cadastrados.
 exports.getAllOrders = async () => {
 
     const orders = await orderRepository.findAllOrders();
@@ -102,6 +107,7 @@ exports.getAllOrders = async () => {
     return orders;
 };
 
+// Exclui um pedido existente.
 exports.deleteOrder = async (orderId) => {
 
     const deleted = await orderRepository.deleteOrder(orderId)
@@ -112,6 +118,7 @@ exports.deleteOrder = async (orderId) => {
 
 }
 
+// Valida e atualiza um pedido existente.
 exports.updateOrder = async (orderId, payload) => {
 
     const existing = await orderRepository.findOrderById(orderId);

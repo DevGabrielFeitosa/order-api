@@ -1,5 +1,6 @@
 const orderService = require("../services/orderService")
 
+// Cria um novo pedido.
 exports.createOrder = async (req, res) => {
 
     try {
@@ -20,6 +21,7 @@ exports.createOrder = async (req, res) => {
 
 }
 
+// Busca um pedido pelo identificador.
 exports.getOrderById = async (req, res) => {
 
     try {
@@ -37,6 +39,7 @@ exports.getOrderById = async (req, res) => {
     }
 };
 
+// Lista todos os pedidos.
 exports.listOrders = async (req, res) => {
 
     try {
@@ -55,6 +58,7 @@ exports.listOrders = async (req, res) => {
 
 }
 
+// Remove um pedido pelo identificador.
 exports.deleteOrder = async (req, res) => {
 
     try {
@@ -73,6 +77,7 @@ exports.deleteOrder = async (req, res) => {
 
 }
 
+// Atualiza os dados de um pedido.
 exports.updateOrder = async (req, res) => {
 
     try {

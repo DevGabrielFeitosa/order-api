@@ -111,3 +111,27 @@ exports.deleteOrder = async (orderId) => {
     }
 
 }
+
+exports.updateOrder = async (orderId, payload) => {
+
+    const existing = await orderRepository.findOrderById(orderId);
+
+    if (!existing) {
+        throw new HttpError(404, "Pedido não encontrado");
+    }
+
+    validatePayload(payload);
+
+    const order = {
+        orderId: orderId,
+        value: payload.valorTotal,
+        creationDate: payload.dataCriacao,
+        items: payload.items.map(item => ({
+            productId: Number(item.idItem),
+            quantity: item.quantidadeItem,
+            price: item.valorItem
+        }))
+    };
+
+    return await orderRepository.updateOrder(order);
+};

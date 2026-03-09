@@ -112,3 +112,61 @@ exports.deleteOrder = async (orderId) => {
 
     }
 }
+
+exports.updateOrder = async (order) => {
+
+    const client = await pool.connect();
+
+    try {
+
+        await client.query("BEGIN");
+
+        await client.query(
+            `UPDATE orders
+             SET value = $1,
+                 "creationDate" = $2
+             WHERE "orderId" = $3`,
+            [
+                order.value,
+                order.creationDate,
+                order.orderId
+            ]
+        );
+
+        // remove itens antigos
+        await client.query(
+            `DELETE FROM items WHERE "orderId" = $1`,
+            [order.orderId]
+        );
+
+        // insere itens novos
+        for (const item of order.items) {
+
+            await client.query(
+                `INSERT INTO items ("orderId", "productId", quantity, price)
+                 VALUES ($1,$2,$3,$4)`,
+                [
+                    order.orderId,
+                    item.productId,
+                    item.quantity,
+                    item.price
+                ]
+            );
+
+        }
+
+        await client.query("COMMIT");
+
+        return order;
+
+    } catch (error) {
+
+        await client.query("ROLLBACK");
+        throw error;
+
+    } finally {
+
+        client.release();
+
+    }
+};

@@ -79,3 +79,14 @@ exports.createOrder = async (payload) => {
     const order = mapRequestToOrder(payload);
     return await orderRepository.saveOrder(order);
 };
+
+exports.getOrderById = async (orderId) => {
+
+    const order = await orderRepository.findOrderWithItems(orderId);
+
+    if (!order) {
+        throw new HttpError(404, "Pedido não encontrado");
+    }
+
+    return order;
+};

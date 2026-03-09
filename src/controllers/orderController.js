@@ -19,3 +19,20 @@ exports.createOrder = async (req, res) => {
     }
 
 }
+
+exports.getOrderById = async (req, res) => {
+
+    try {
+
+        const order = await orderService.getOrderById(req.params.orderId);
+
+        res.status(200).json(order);
+
+    } catch (error) {
+
+        res.status(error.statusCode || 500).json({
+            message: error.message
+        });
+
+    }
+};

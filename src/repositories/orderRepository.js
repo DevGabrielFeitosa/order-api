@@ -49,3 +49,25 @@ exports.findOrderById = async (orderId) => {
     const result = await pool.query('SELECT * FROM orders WHERE "orderId" = $1', [orderId]);
     return result.rows[0];
 };
+
+exports.findOrderWithItems = async (orderId) => {
+
+    const orderResult = await pool.query(
+        `SELECT * FROM orders WHERE "orderId" = $1`,
+        [orderId]
+    );
+
+    if (orderResult.rows.length === 0) {
+        return null;
+    }
+
+    const itemsResult = await pool.query(
+        `SELECT * FROM items WHERE "orderId" = $1`,
+        [orderId]
+    );
+
+    return {
+        ...orderResult.rows[0],
+        items: itemsResult.rows
+    };
+};

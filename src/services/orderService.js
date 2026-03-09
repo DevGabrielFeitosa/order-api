@@ -1,4 +1,5 @@
-const HttpError = require("../errors/HttpError");const orderRepository = require("../repositories/orderRepository");
+const HttpError = require("../errors/HttpError");
+const orderRepository = require("../repositories/orderRepository");
 
 // Valida os dados recebidos do pedido.
 function validatePayload(payload) {

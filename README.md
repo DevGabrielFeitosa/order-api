@@ -33,6 +33,6 @@ API para autenticação e gerenciamento de pedidos.
 - Banco configurado atualmente: PostgreSQL em `localhost:5433`
 - Database: `ordersdb`
 
-## Documentação
+## Documentação da API
 
 - Postman: https://documenter.getpostman.com/view/25011304/2sBXcLhJJb

@@ -78,3 +78,37 @@ exports.findAllOrders = async () => {
 
     return result.rows
 }
+
+exports.deleteOrder = async (orderId) => {
+
+    const client = await pool.connect()
+
+    try {
+
+        await client.query("BEGIN")
+
+        await client.query(
+            `DELETE FROM items WHERE "orderId" = $1`,
+            [orderId]
+        )
+
+        const result = await client.query(
+            `DELETE FROM orders WHERE "orderId" = $1`,
+            [orderId]
+        )
+
+        await client.query("COMMIT")
+
+        return result.rowCount
+
+    } catch (error) {
+
+        await client.query("ROLLBACK")
+        throw error
+
+    } finally {
+
+        client.release()
+
+    }
+}

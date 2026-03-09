@@ -101,3 +101,13 @@ exports.getAllOrders = async () => {
 
     return orders;
 };
+
+exports.deleteOrder = async (orderId) => {
+
+    const deleted = await orderRepository.deleteOrder(orderId)
+
+    if (deleted === 0) {
+        throw new HttpError(404, "Pedido não encontrado")
+    }
+
+}

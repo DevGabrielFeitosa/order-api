@@ -54,3 +54,21 @@ exports.listOrders = async (req, res) => {
     }
 
 }
+
+exports.deleteOrder = async (req, res) => {
+
+    try {
+
+        await orderService.deleteOrder(req.params.orderId)
+
+        res.status(204).send()
+
+    } catch (error) {
+
+        res.status(error.statusCode || 500).json({
+            message: error.message
+        })
+
+    }
+
+}

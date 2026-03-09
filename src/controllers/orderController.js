@@ -10,9 +10,10 @@ exports.createOrder = async (req, res) => {
 
     } catch (error) {
 
-        res.status(500).json({
-            message: "Erro ao criar pedido",
-            error: error.message
+        const status = error.statusCode || 500
+
+        res.status(status).json({
+            message: error.message || "Erro interno"
         })
 
     }

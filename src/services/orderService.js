@@ -1,4 +1,4 @@
-const orderRepository = require("../repositories/orderRepository");
+const HttpError = require("../errors/HttpError");const orderRepository = require("../repositories/orderRepository");
 
 function validatePayload(payload) {
     const errors = [];
@@ -22,7 +22,8 @@ function validatePayload(payload) {
 
     if (!Array.isArray(payload.items) || payload.items.length === 0) {
         errors.push("items é obrigatório e deve conter pelo menos um item");
-    } else {
+    }else {
+        const seenIds = new Set();
         payload.items.forEach((item, index) => {
             if (!item.idItem || typeof item.idItem !== 'string') {
                 errors.push(`items[${index}].idItem é obrigatório e deve ser uma string`);
@@ -30,6 +31,12 @@ function validatePayload(payload) {
                 const productId = Number(item.idItem);
                 if (isNaN(productId) || productId <= 0) {
                     errors.push(`items[${index}].idItem deve ser um número positivo válido`);
+                }
+                // verificar duplicidade
+                if (seenIds.has(item.idItem)) {
+                    errors.push(`items[${index}].idItem duplicado: ${item.idItem} já foi informado em outro item`);
+                } else {
+                    seenIds.add(item.idItem);
                 }
             }
 
@@ -44,7 +51,7 @@ function validatePayload(payload) {
     }
 
     if (errors.length > 0) {
-        throw new Error(`Erros de validação: ${errors.join('; ')}`);
+        throw new HttpError(400, `Erros de validação: ${errors.join('; ')}`);
     }
 }
 
@@ -66,7 +73,7 @@ exports.createOrder = async (payload) => {
 
     const existing = await orderRepository.findOrderById(payload.numeroPedido);
     if (existing) {
-        throw new Error("Este pedido já está aguardando na fila de processamento");
+        throw new HttpError(409, "Este pedido já está aguardando na fila de processamento");
     }
 
     const order = mapRequestToOrder(payload);

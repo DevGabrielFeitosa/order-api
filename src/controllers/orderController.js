@@ -36,3 +36,21 @@ exports.getOrderById = async (req, res) => {
 
     }
 };
+
+exports.listOrders = async (req, res) => {
+
+    try {
+
+        const orders = await orderService.getAllOrders()
+
+        res.status(200).json(orders)
+
+    } catch (error) {
+
+        res.status(error.statusCode || 500).json({
+            message: error.message || "Erro interno"
+        })
+
+    }
+
+}

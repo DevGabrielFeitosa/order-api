@@ -71,3 +71,10 @@ exports.findOrderWithItems = async (orderId) => {
         items: itemsResult.rows
     };
 };
+
+exports.findAllOrders = async () => {
+
+    const result = await pool.query(`SELECT * FROM orders ORDER BY "creationDate" DESC`)
+
+    return result.rows
+}

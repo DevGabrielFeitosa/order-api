@@ -90,3 +90,14 @@ exports.getOrderById = async (orderId) => {
 
     return order;
 };
+
+exports.getAllOrders = async () => {
+
+    const orders = await orderRepository.findAllOrders();
+
+    if (!orders) {
+        throw new HttpError(404, "Nenhum pedido encontrado");
+    }
+
+    return orders;
+};
